@@ -1,0 +1,2 @@
+source /home/sapython/mechatronics/dialysis/RiVitaflow_os/build/bootloader/gdbinit/symbols
+source /home/sapython/mechatronics/dialysis/RiVitaflow_os/build/bootloader/gdbinit/connect

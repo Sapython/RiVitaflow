@@ -1,0 +1,13 @@
+# Target labels
+ bootloader
+# Source files and their labels
+/home/sapython/mechatronics/dialysis/RiVitaflow_os/build/CMakeFiles/bootloader
+/home/sapython/mechatronics/dialysis/RiVitaflow_os/build/CMakeFiles/bootloader.rule
+/home/sapython/mechatronics/dialysis/RiVitaflow_os/build/CMakeFiles/bootloader-complete.rule
+/home/sapython/mechatronics/dialysis/RiVitaflow_os/build/bootloader-prefix/src/bootloader-stamp/bootloader-build.rule
+/home/sapython/mechatronics/dialysis/RiVitaflow_os/build/bootloader-prefix/src/bootloader-stamp/bootloader-configure.rule
+/home/sapython/mechatronics/dialysis/RiVitaflow_os/build/bootloader-prefix/src/bootloader-stamp/bootloader-download.rule
+/home/sapython/mechatronics/dialysis/RiVitaflow_os/build/bootloader-prefix/src/bootloader-stamp/bootloader-install.rule
+/home/sapython/mechatronics/dialysis/RiVitaflow_os/build/bootloader-prefix/src/bootloader-stamp/bootloader-mkdir.rule
+/home/sapython/mechatronics/dialysis/RiVitaflow_os/build/bootloader-prefix/src/bootloader-stamp/bootloader-patch.rule
+/home/sapython/mechatronics/dialysis/RiVitaflow_os/build/bootloader-prefix/src/bootloader-stamp/bootloader-update.rule
