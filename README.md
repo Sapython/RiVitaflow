@@ -25,27 +25,58 @@ RiVitaflow OS is a complete firmware solution for controlling a dialysis machine
 
 ### GPIO Pin Assignments
 
+#### L298N Motor Driver - Pump 1 (Blood Pump)
 | Component | GPIO Pin | Type | Description |
 |-----------|----------|------|-------------|
-| **Buzzer** | GPIO 23 | Output | PWM-controlled buzzer (2kHz) |
-| **Red LED (Startup)** | GPIO 25 | Output | Startup sequence indicator |
-| **Green LED (Operation)** | GPIO 26 | Output | Running operation indicator |
-| **Stepper Step** | GPIO 18 | Output | Stepper motor step signal |
-| **Stepper Direction** | GPIO 19 | Output | Stepper motor direction |
-| **Stepper Enable** | GPIO 21 | Output | Stepper motor enable (active low) |
-| **Blood Pump** | GPIO 22 | Output | Blood pump control |
-| **Waste Pump** | GPIO 27 | Output | Waste cycle pump control |
-| **I2C SDA (SPO2)** | GPIO 32 | I/O | SPO2 sensor data |
-| **I2C SCL (SPO2)** | GPIO 33 | Output | SPO2 sensor clock |
+| **Pump 1 ENA** | GPIO 18 | Output | PWM speed control (0-255) |
+| **Pump 1 IN1** | GPIO 19 | Output | Direction control |
+| **Pump 1 IN2** | GPIO 27 | Output | Direction control |
+
+#### L298N Motor Driver - Pump 2 (Waste Pump)
+| Component | GPIO Pin | Type | Description |
+|-----------|----------|------|-------------|
+| **Pump 2 ENB** | GPIO 14 | Output | PWM speed control (0-255) |
+| **Pump 2 IN3** | GPIO 12 | Output | Direction control |
+| **Pump 2 IN4** | GPIO 13 | Output | Direction control |
+
+#### 28BYJ-48 Stepper Motor (ULN2003 Driver)
+| Component | GPIO Pin | Type | Description |
+|-----------|----------|------|-------------|
+| **Stepper IN1** | GPIO 16 | Output | Coil 1 control |
+| **Stepper IN2** | GPIO 17 | Output | Coil 2 control |
+| **Stepper IN3** | GPIO 4 | Output | Coil 3 control |
+| **Stepper IN4** | GPIO 5 | Output | Coil 4 control |
+
+#### MAX30102 Sensor (I2C)
+| Component | GPIO Pin | Type | Description |
+|-----------|----------|------|-------------|
+| **I2C SDA** | GPIO 21 | I/O | SPO2 sensor data |
+| **I2C SCL** | GPIO 22 | Output | SPO2 sensor clock |
+
+#### MAX98357A I2S Audio (DAC + Amp)
+| Component | GPIO Pin | Type | Description |
+|-----------|----------|------|-------------|
+| **I2S BCK** | GPIO 32 | Output | Serial clock (bit clock) |
+| **I2S LRCK** | GPIO 25 | Output | Word clock (left/right) |
+| **I2S DATA** | GPIO 33 | Output | Serial data out |
+
+#### LED Indicators
+| Component | GPIO Pin | Type | Description |
+|-----------|----------|------|-------------|
+| **Red LED (Startup)** | GPIO 2 | Output | Startup sequence indicator |
+| **Green LED (Operation)** | GPIO 15 | Output | Running operation indicator |
 
 ### Required Components
 
-1. ESP32 Development Board
-2. Active buzzer or speaker
-3. 2x LEDs (red and green) with appropriate resistors
-4. Stepper motor with driver (A4988, DRV8825, or similar)
-5. 2x DC pumps or pump drivers
-6. SPO2 sensor module (I2C interface, e.g., MAX30102)
+1. **ESP32 Development Board**
+2. **L298N Dual H-Bridge Motor Driver** - for controlling 2 DC pumps
+3. **2x DC Pumps** - Blood pump and waste pump
+4. **28BYJ-48 Stepper Motor with ULN2003 Driver** - for dialysate flow control
+5. **MAX30102 SPO2 and Heart Rate Sensor** - I2C interface for vital signs monitoring
+6. **MAX98357A I2S DAC Amplifier** - for audio output
+7. **Speaker(s)** - connected to MAX98357A
+8. **2x LEDs** (red and green) with appropriate resistors (220Ω-330Ω)
+9. **Power Supply** - adequate for ESP32, motors, and pumps
 
 ## Software Architecture
 

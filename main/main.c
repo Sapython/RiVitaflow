@@ -132,6 +132,9 @@ static const esp_gatts_attr_db_t gatt_db[GATTS_NUM_HANDLE] = {
            ESP_GATT_PERM_WRITE, sizeof(dialysis_config_t), 0, NULL}},
 };
 
+/* ========== Function Declarations ========== */
+static void audio_play_wav_sync(const char *filename);
+
 /* ========== Hardware Initialization Functions ========== */
 
 /* I2S-based audio output for MAX98357A (I2S DAC+amp). We initialize an I2S
@@ -325,7 +328,6 @@ void led_operation_off(void) { gpio_set_level(LED_OPERATION_GREEN, 0); }
 static void led_status_task(void *arg)
 {
     machine_state_t prev_state = (machine_state_t)0xFF;
-    bool prev_ble = false;
 
     while (1) {
         machine_state_t state = g_machine_state;
@@ -387,7 +389,6 @@ static void led_status_task(void *arg)
         }
 
         prev_state = state;
-        prev_ble = ble;
     }
 }
 
@@ -657,7 +658,6 @@ static void audio_play_wav_task(void *arg)
 
     // Use the sync helper to play the file using minimal temporary allocations.
     // The helper does the actual streaming in-place.
-    extern void audio_play_wav_sync(const char *filename);
     audio_play_wav_sync(filename);
 
     vPortFree((void*)filename);
@@ -863,7 +863,7 @@ static void audio_play_u8_task(void *arg)
         return;
     }
 
-    ESP_LOGI(TAG, "audio_play_u8: playing %s @ %u Hz", filename, sample_rate);
+    ESP_LOGI(TAG, "audio_play_u8: playing %s @ %" PRIu32 " Hz", filename, sample_rate);
 
     const size_t buf_size = 512;
     uint8_t *buf = malloc(buf_size);
@@ -960,6 +960,8 @@ void audio_play_u8_async(const char *path, uint32_t sample_rate)
 
 // Play all WAV files found under /spiffs sequentially (blocks until done).
 // This uses the low-RAM sync helper so memory usage is bounded.
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wformat-truncation"
 static void audio_play_all_spiffs_task(void *arg)
 {
     const char *base = "/spiffs";
@@ -971,7 +973,7 @@ static void audio_play_all_spiffs_task(void *arg)
     }
 
     struct dirent *entry;
-    char path[256];
+    char path[512];  // Increased buffer size to avoid truncation issues
     while ((entry = readdir(d)) != NULL) {
         if (entry->d_type != DT_REG && entry->d_type != DT_UNKNOWN) continue;
         const char *name = entry->d_name;
@@ -991,6 +993,7 @@ static void audio_play_all_spiffs_task(void *arg)
     closedir(d);
     vTaskDelete(NULL);
 }
+#pragma GCC diagnostic pop
 
 void audio_play_all_spiffs_async(void)
 {
